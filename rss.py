@@ -78,7 +78,7 @@ def line_prepender(filename, line):
 def update(rssFeed, tempDir, libBaseDir):
 	#download latest
 	updateTime = getDateRSS(rssFeed,0)
-	for i in range(0,len(rssFeed.entries)):
+	for i in range(len(rssFeed.entries)-1,-1,-1): # start at oldest entry, work forward
 
 		feedDate = getDateRSS(rssFeed, i)
 		if getDateFile() < feedDate:
