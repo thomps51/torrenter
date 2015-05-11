@@ -15,7 +15,7 @@ while(True):
 	rssFeed = rss.getRSSfeed()
 
 	filer.checkFolder(tempDir)
-	rss.update(rssFeed,tempDir)
+	rss.update(rssFeed,tempDir,libBaseDir)
 	shutil.rmtree(tempDir)
-
+	break
 	time.sleep(3600)

@@ -10,7 +10,7 @@ def recursive_glob(rootdir='.', suffix=''):
             for looproot, _, filenames in os.walk(rootdir)
             for filename in filenames if filename.endswith(suffix)]
 
-def checkFolder(baseDir, folderName):
+def checkFolder1(baseDir, folderName):
 	pathExists = os.path.exists(baseDir+folderName+"/")
 	if not pathExists:
 		os.mkdir(baseDir+folderName)
@@ -22,7 +22,7 @@ def checkFolder(folderPath):
 
 def placeFile(filePath,showTitle,libBaseDir):
 	# check if Directory of showTitle exists
-	checkFolder(libBaseDir, showTitle)
+	checkFolder1(libBaseDir, showTitle)
 
 	# move the file to that directory
 	fileName = os.path.basename(filePath)
@@ -33,7 +33,7 @@ def placeFile(filePath,showTitle,libBaseDir):
 	match = re.search(r'''(?ix)(?:s|S|^)\s*(\d{2})''',fileName)
 
 	season = int(match.group(0)[1:3])
-	checkFolder(libBaseDir+"/"+showTitle+"/", "Season "+ str(season))
+	checkFolder1(libBaseDir+"/"+showTitle+"/", "Season "+ str(season))
 	os.rename(filePath,libBaseDir+"/"+showTitle+"/"+"Season "+ str(season)+"/"+fileName)
 
 

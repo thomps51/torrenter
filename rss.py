@@ -75,7 +75,7 @@ def line_prepender(filename, line):
         f.seek(0, 0)
         f.write(line.rstrip('\r\n') + '\n' + content)
 
-def update(rssFeed, tempDir):
+def update(rssFeed, tempDir, libBaseDir):
 	#download latest
 	updateTime = getDateRSS(rssFeed,0)
 	for i in range(0,len(rssFeed.entries)):
@@ -90,7 +90,7 @@ def update(rssFeed, tempDir):
 			
 			magnet = rssFeed.entries[i].link
 			torrent(magnet, tempDir)	
-			filer.updateLibrary(rss.getShowTitle(rssFeed,i))
+			filer.updateLibrary(getShowTitle(rssFeed,i), libBaseDir)
 		
 	f = open('time.txt', 'w')
 	f.write(str(updateTime))
