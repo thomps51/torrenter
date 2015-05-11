@@ -1,3 +1,4 @@
+#! /usr/bin/env python
 import rss
 import filer
 import shutil
@@ -12,11 +13,9 @@ libBaseDir	= os.path.dirname(cwd)+"/TVshows/"
 
 while(True):
 	rssFeed = rss.getRSSfeed()
-	showTitle = rss.getShowTitle(rssFeed,0)
-	
+
 	filer.checkFolder(tempDir)
-	updated = rss.update(rssFeed)
-	if updated:
-		filer.updateLibrary(showTitle,libBaseDir)
+	rss.update(rssFeed,tempDir)
 	shutil.rmtree(tempDir)
+
 	time.sleep(3600)

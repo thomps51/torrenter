@@ -4,6 +4,7 @@ import libtorrent as lt
 import time
 import sys
 import re
+import filer
 
 def Month(month):
 	months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]
@@ -30,11 +31,11 @@ def getDateFile():
 	t2    = int(sDate[14:16])
 	t3    = int(sDate[17:19])
 	return datetime(int(year),int(month),int(day),int(t1),int(t2),int(t3))
-def torrent(magnet):
+def torrent(magnet , tempDir):
 	ses = lt.session()
 	ses.listen_on(6881, 6891)
 	params = {
-	    'save_path': '/Users/tonythompson/RaspPi/temp',
+	    'save_path': tempDir,
 	    'storage_mode': lt.storage_mode_t(2),
 	    'paused': False,
 	    'auto_managed': True,
@@ -74,29 +75,23 @@ def line_prepender(filename, line):
         f.seek(0, 0)
         f.write(line.rstrip('\r\n') + '\n' + content)
 
-def update(rssFeed):
-	# get date of late sync
-	with open('time.txt', 'r') as f:
-		sDate = f.readline()
-
-	updated = False   # flag to tell if updated (used for filing)
+def update(rssFeed, tempDir):
 	#download latest
+	updateTime = getDateRSS(rssFeed,0)
 	for i in range(0,len(rssFeed.entries)):
 
-		if getDateFile() < getDateRSS(rssFeed, i):
+		feedDate = getDateRSS(rssFeed, i)
+		if getDateFile() < feedDate:
 	
 			# check from last item in RSS feed, comparing titles
 			# if saved title not found, start from last item in feed
-			print "updating!"
+			print "updating! " + getShowTitle(rssFeed,i)
 	
 			
-			magnet = rssFeed.entries[0].link
-			torrent(magnet)	
-			f = open('time.txt', 'w')
-			f.write(str(getDateRSS(rssFeed)))
-			f.close()
-			updated = True
-		else:
-			return updated
-	
-	
+			magnet = rssFeed.entries[i].link
+			torrent(magnet, tempDir)	
+			filer.updateLibrary(rss.getShowTitle(rssFeed,i))
+		
+	f = open('time.txt', 'w')
+	f.write(str(updateTime))
+	f.close()
