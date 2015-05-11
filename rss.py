@@ -1,10 +1,9 @@
 import feedparser
 from datetime import datetime
-import libtorrent as lt
-import time
 import sys
 import re
 import filer
+import torrenter
 
 def Month(month):
 	months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]
@@ -31,32 +30,6 @@ def getDateFile():
 	t2    = int(sDate[14:16])
 	t3    = int(sDate[17:19])
 	return datetime(int(year),int(month),int(day),int(t1),int(t2),int(t3))
-def torrent(magnet , tempDir):
-	ses = lt.session()
-	ses.listen_on(6881, 6891)
-	params = {
-	    'save_path': tempDir,
-	    'storage_mode': lt.storage_mode_t(2),
-	    'paused': False,
-	    'auto_managed': True,
-	    'duplicate_is_error': True}
-	
-	handle = lt.add_magnet_uri(ses, magnet, params)
-	ses.start_dht()
-	print 'downloading metadata...'
-	while (not handle.has_metadata()):
-	    time.sleep(1)
-	print 'got metadata, starting torrent download...'
-	while (handle.status().state != lt.torrent_status.seeding):
-	    s = handle.status()
-	    state_str = ['queued', 'checking', 'downloading metadata', \
-	                'downloading', 'finished', 'seeding', 'allocating']
-#	    print '%.2f%% complete (down: %.1f kb/s up: %.1f kB/s peers: %d) %s %.3' % \
-#	                (s.progress * 100, s.download_rate / 1000, s.upload_rate / 1000, \
-#	                s.num_peers, state_str[s.state], s.total_download/1000000)
-	    print s.progress * 100
-	    time.sleep(5)	
-	return
 
 def getRSSfeed():
 	url = "http://showrss.info/rss.php?user_id=248153&hd=1&proper=1&raw=true" 
@@ -89,7 +62,7 @@ def update(rssFeed, tempDir, libBaseDir):
 	
 			
 			magnet = rssFeed.entries[i].link
-			torrent(magnet, tempDir)	
+			torrenter.torrent(magnet, tempDir)	
 			filer.updateLibrary(getShowTitle(rssFeed,i), libBaseDir)
 		
 	f = open('time.txt', 'w')
