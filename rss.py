@@ -50,7 +50,9 @@ def line_prepender(filename, line):
 
 def update(rssFeed, tempDir, libBaseDir):
 	#download latest
-	updateTime = getDateRSS(rssFeed,0)
+	updateTime  = getDateRSS(rssFeed,0)
+	magnetLinks = []
+	showTitles  = []
 	for i in range(len(rssFeed.entries)-1,-1,-1): # start at oldest entry, work forward
 
 		feedDate = getDateRSS(rssFeed, i)
@@ -58,13 +60,10 @@ def update(rssFeed, tempDir, libBaseDir):
 	
 			# check from last item in RSS feed, comparing titles
 			# if saved title not found, start from last item in feed
-			print "updating! " + getShowTitle(rssFeed,i)
-	
-			
-			magnet = rssFeed.entries[i].link
-			torrenter.torrent(magnet, tempDir)	
-			filer.updateLibrary(getShowTitle(rssFeed,i), libBaseDir)
-		
+			print "Found Update: " + rssFeed.entries[i].title
+			magnetLinks.append(rssFeed.entries[i].link)
+			showTitles.append(getShowTitle(rssFeed,i))
 	f = open('time.txt', 'w')
 	f.write(str(updateTime))
 	f.close()
+	return magnetLinks, showTitles

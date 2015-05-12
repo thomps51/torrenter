@@ -29,13 +29,14 @@ def placeFile(filePath,showTitle,libBaseDir):
 #	os.rename(filePath,libBaseDir+"/"+showTitle+"/"+fileName)
 
 	#check season number
-	print fileName
 	match = re.search(r'''(?ix)(?:s|S|^)\s*(\d{2})''',fileName)
 
 	season = int(match.group(0)[1:3])
 	checkFolder1(libBaseDir+"/"+showTitle+"/", "Season "+ str(season))
-	os.rename(filePath,libBaseDir+"/"+showTitle+"/"+"Season "+ str(season)+"/"+fileName)
 
+	newFilePath = libBaseDir+"/"+showTitle+"/"+"Season "+ str(season)+"/"+fileName
+	os.rename(filePath, newFilePath)
+	return newFilePath
 
 def updateLibrary(showTitle,libBaseDir):
 	cfiles = recursive_glob('./temp', '')

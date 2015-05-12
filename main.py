@@ -1,4 +1,5 @@
 #! /usr/bin/env python
+import torrenter
 import rss
 import filer
 import shutil, os, time 
@@ -19,8 +20,10 @@ libBaseDir	= os.path.dirname(cwd)+"/TVshows/"
 while(True):
 	rssFeed = rss.getRSSfeed()
 
-	filer.checkFolder(tempDir)
-	rss.update(rssFeed,tempDir,libBaseDir)
-	shutil.rmtree(tempDir)
+	magnetLinks, showTitles = rss.update(rssFeed,tempDir,libBaseDir)
+	newFiles = torrenter.downloadShowsToLibrary(magnetLinks, showTitles, tempDir, libBaseDir)	
+	print newFiles	
+	# clean temp folder
+	
 	break
 	time.sleep(3600)

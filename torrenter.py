@@ -1,7 +1,26 @@
 import libtorrent as lt
-import time
+import time, os
+import filer
 
-def torrent(magnet , tempDir):
+def downloadShowsToLibrary(magnetLinks, showTitles, tempDir, libBaseDir):
+	newFiles = []
+	for i in range(0,len(magnetLinks)):
+		newFile = torrent(magnetLinks[i], showTitles[i], tempDir, libBaseDir)
+		newFiles.append(newFile)
+	return newFiles
+def updateLibrary(info, showTitle, tempDir, libBaseDir):
+        Nfiles = info.num_files()
+        filePaths = []
+	fileSizes = []
+        for i in range(0,Nfiles):
+                filePaths.append(tempDir + info.file_at(i).path)
+        for cfile in filePaths:
+                fileSizes.append(os.path.getsize(cfile))
+        maxIndex = fileSizes.index(max(fileSizes))
+        tvFile = filePaths[maxIndex]
+	return filer.placeFile(tvFile,showTitle,libBaseDir) # return filepath of new item
+
+def torrent(magnet, showTitle, tempDir, libBaseDir):
         ses = lt.session()
         ses.listen_on(6881, 6891)
         params = {
@@ -30,10 +49,15 @@ def torrent(magnet , tempDir):
             time.sleep(5)
 	print 'torrent downloaded, seeding to 3x...'
 	# seed the torrent
-	seeded = False
 	status = handle.status()
+	timeStartSeed = time.time()
 	while( 3 * status.total_download > status.total_upload ):
 		status = handle.status()
 		print str( float(status.total_upload) / (3 * status.total_download )) + "% seeded     Current Speed: " + str(status.upload_rate/1000)+"kb/s up"
 		time.sleep(10)
-        return
+		if time.time() - timeStartSeed > 10:  # seed for up to an hour
+			break
+
+	# return filepath of new item
+	return updateLibrary(handle.get_torrent_info(), showTitle, tempDir ,libBaseDir) 
+ 
