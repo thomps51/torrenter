@@ -32,15 +32,24 @@ def getDateFile():
 	return datetime(int(year),int(month),int(day),int(t1),int(t2),int(t3))
 
 def getRSSfeed():
-	url = "http://showrss.info/rss.php?user_id=248153&hd=1&proper=1&raw=true" 
-	d = feedparser.parse( url )
-	return d
+    #url = "http://showrss.info/rss.php?user_id=248153&hd=1&proper=1&raw=true" 
+    #url = "http://kat.cr/usearch/The%20Late%20Show%20Colbert/?rss=1" 
+    url = "http://showrss.info/rss.php?user_id=248153&hd=1&proper=1"
+    d = feedparser.parse( url )
+    return d
 
 
 def getShowTitle(rssFeed, index):
-	title = rssFeed.entries[index].title
-	match = re.match(r'.+?(?= S\d\d)',title)
-	return str(match.group(0))
+    title = rssFeed.entries[index].title
+    print title
+    match = re.match(r'.+?(?= S\d\d)',title)
+    if match == None:
+        match = re.match(r'.+?(?= \dx\d\d)',title)
+    if match == None:
+        match = re.match(r'.+?(?= \d\d\d\d-\d\d-\d\d)',title)
+    print match
+    print str(match.group(0))
+    return str(match.group(0))
 
 def line_prepender(filename, line):
     with open(filename, 'r+') as f:
@@ -53,6 +62,7 @@ def update(rssFeed, tempDir, libBaseDir):
 	updateTime  = getDateRSS(rssFeed,0)
 	magnetLinks = []
 	showTitles  = []
+	updated	    = False
 	for i in range(len(rssFeed.entries)-1,-1,-1): # start at oldest entry, work forward
 
 		feedDate = getDateRSS(rssFeed, i)
@@ -63,7 +73,8 @@ def update(rssFeed, tempDir, libBaseDir):
 			print "Found Update: " + rssFeed.entries[i].title
 			magnetLinks.append(rssFeed.entries[i].link)
 			showTitles.append(getShowTitle(rssFeed,i))
+			updated = True
 	f = open('time.txt', 'w')
 	f.write(str(updateTime))
 	f.close()
-	return magnetLinks, showTitles
+	return updated, magnetLinks, showTitles

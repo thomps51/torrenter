@@ -1,7 +1,5 @@
 #! /usr/bin/env python
-import torrenter
-import rss
-import filer
+import torrenter, rss, filer, emailer
 import shutil, os, time 
 from optparse import OptionParser
 
@@ -15,15 +13,23 @@ parser.add_option("-s", "--seed",
 cwd		= os.getcwd()
 baseDir 	= cwd + "/"
 tempDir		= cwd + "/temp/"
-libBaseDir	= os.path.dirname(cwd)+"/TVshows/"
+#libBaseDir	= os.path.dirname(cwd)+"/TVshows/"
+libBaseDir	= "/media/Seagate"+"/TVshows"
 
 while(True):
-	rssFeed = rss.getRSSfeed()
+    print "getting rss feed"
+    rssFeed = rss.getRSSfeed()
+    print "getting magnet links"
+    updated, magnetLinks, showTitles = rss.update(rssFeed,tempDir,libBaseDir)
+    if updated:
+        print "found update - updating"
+        newFilesPath = torrenter.downloadShowsToLibrary(magnetLinks, showTitles, tempDir, libBaseDir)
+        newFiles = []
+        for newFilePath in newFilesPath:
+            newFiles.append(os.path.basename(newFilePath))
+        emailer.showUpdateEmail(newFiles)
 
-	magnetLinks, showTitles = rss.update(rssFeed,tempDir,libBaseDir)
-	newFiles = torrenter.downloadShowsToLibrary(magnetLinks, showTitles, tempDir, libBaseDir)	
-	print newFiles	
-	# clean temp folder
-	
-	break
-	time.sleep(3600)
+# clean temp folder
+
+    #break	
+    time.sleep(3600)
