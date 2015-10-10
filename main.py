@@ -31,5 +31,6 @@ while(True):
 
 # clean temp folder
 
-    #break	
+    #break
+    print "finished updating, sleeping..."	
     time.sleep(3600)

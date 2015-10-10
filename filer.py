@@ -34,7 +34,10 @@ def placeFile(filePath,showTitle,libBaseDir):
         command="cp " + filePath + " " + newFilePath
         #subprocess.call(command,shell=True)
         #shutil.move(filePath, newFilePath)
+        print "copying file to library..."
         shutil.copyfile(filePath, newFilePath)
+        shutil.rmtree(os.path.dirname(filePath))
+        print "copy done!"
         return newFilePath
  
     #check season number
@@ -50,6 +53,7 @@ def placeFile(filePath,showTitle,libBaseDir):
     #command="cp " + filePath + " " + newFilePath
     #subprocess.call(command,shell=True)
     shutil.copyfile(filePath, newFilePath)
+    shutil.rmtree(os.path.dirname(filePath))
     print "copy done!"
     return newFilePath
 

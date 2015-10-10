@@ -47,8 +47,8 @@ def getShowTitle(rssFeed, index):
         match = re.match(r'.+?(?= \dx\d\d)',title)
     if match == None:
         match = re.match(r'.+?(?= \d\d\d\d-\d\d-\d\d)',title)
-    print match
-    print str(match.group(0))
+    #print match
+    #print str(match.group(0))
     return str(match.group(0))
 
 def line_prepender(filename, line):
