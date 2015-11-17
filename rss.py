@@ -38,6 +38,7 @@ def getDateRSS(rssFeed , index):
         print rssFeed.entries[index].published 
  
     return dateRSS
+# TODO: if no file avaiable, make new one
 def getDateFile():
     with open('time.txt', 'r') as f:
         sDate = f.readline()

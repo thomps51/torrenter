@@ -3,6 +3,8 @@ import torrenter, rss, filer, emailer
 import shutil, os, time 
 from optparse import OptionParser
 
+
+# TODO : make seed option work, add option for sleep time
 parser = OptionParser()
 parser.add_option("-s", "--seed",
                   action="store_true", dest="seed", default=False,
