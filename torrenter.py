@@ -51,7 +51,7 @@ def torrent(magnet, showTitle, tempDir, libBaseDir):
         #            s.num_peers, state_str[s.state], s.total_download/1000000)
         
         if percent < s.progress * 100:
-            print str(percent) + " %"
+            print str(percent) + " %   " + "Speed: " + str(s.download_rate / 1000 )  
             percent+=1
         #print s.progress * 100
         time.sleep(5)

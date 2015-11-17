@@ -10,6 +10,11 @@ def Month(month):
 	mon = months.index(month)
 	return mon + 1
 def getDateRSS(rssFeed , index):
+    if index >= len(rssFeed.entries) or len(rssFeed.entries[0].published) < 26:
+        print "Why did this happen? Index too large! Malformed rssFeed? Debug info:"
+        print "Index = " + str(index)
+        print "size of entries = " + len(rssFeed.entries)
+        print "size of published = " + len(rssFeed.entries[0].published)
 	date  = rssFeed.entries[index].published[5:7]
 	month = rssFeed.entries[index].published[8:11]
 	year  = rssFeed.entries[index].published[12:16]

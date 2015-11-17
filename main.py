@@ -12,7 +12,8 @@ parser.add_option("-s", "--seed",
 
 cwd		= os.getcwd()
 baseDir 	= cwd + "/"
-tempDir		= cwd + "/temp/"
+#tempDir		= cwd + "/temp/"
+tempDir		= "/media/Seagate/temp/"
 #libBaseDir	= os.path.dirname(cwd)+"/TVshows/"
 libBaseDir	= "/media/Seagate"+"/TVshows"
 
