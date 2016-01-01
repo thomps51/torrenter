@@ -1,25 +1,27 @@
 #! /usr/bin/env python
-import torrenter, rss, filer, emailer
+import torrenter, rss, filer #emailer
 import shutil, os, time 
 from optparse import OptionParser
 
 parser = OptionParser()
 parser.add_option("-s", "--seed",
                   action="store_true", dest="seed", default=False,
-                  help="seed to 3x")
+                  help="seed to 3x")  # not yet implemented
 
 (options, args) = parser.parse_args()
 
 cwd		= os.getcwd()
 baseDir 	= cwd + "/"
 #tempDir		= cwd + "/temp/"
-tempDir		= "/media/Seagate/temp/"
-#libBaseDir	= os.path.dirname(cwd)+"/TVshows/"
-libBaseDir	= "/media/Seagate"+"/TVshows"
+tempDir		= cwd + "/temp/"
+#tempDir		= "/media/Seagate/temp/"
+libBaseDir	= cwd+"/TVshows/"
+#libBaseDir	= "/media/Seagate"+"/TVshows"
+rssFeedURL = "http://showrss.info/rss.php?user_id=248153&hd=1&proper=1"
 
 while(True):
     print "getting rss feed"
-    rssFeed = rss.getRSSfeed()
+    rssFeed = rss.getRSSfeed(rssFeedURL)
     print "getting magnet links"
     updated, magnetLinks, showTitles = rss.update(rssFeed,tempDir,libBaseDir)
     if updated:

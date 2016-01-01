@@ -50,10 +50,7 @@ def getDateFile():
     t3    = int(sDate[17:19])
     return datetime(int(year),int(month),int(day),int(t1),int(t2),int(t3))
 
-def getRSSfeed():
-    #url = "http://showrss.info/rss.php?user_id=248153&hd=1&proper=1&raw=true" 
-    #url = "http://kat.cr/usearch/The%20Late%20Show%20Colbert/?rss=1" 
-    url = "http://showrss.info/rss.php?user_id=248153&hd=1&proper=1"
+def getRSSfeed(url):
     d = feedparser.parse( url )
     return d
 
