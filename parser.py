@@ -1,3 +1,4 @@
+# most likely depeciated
 class Parser:
 	def showParser:
 	        f = open('shows.txt', 'r')
