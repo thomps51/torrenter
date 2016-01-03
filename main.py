@@ -30,7 +30,7 @@ while(True):
         newFiles = []
         for newFilePath in newFilesPath:
             newFiles.append(os.path.basename(newFilePath))
-        emailer.showUpdateEmail(newFiles)
+        #emailer.showUpdateEmail(newFiles)
 
 # clean temp folder
 
