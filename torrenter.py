@@ -64,7 +64,7 @@ def torrent(magnet, showTitle, tempDir, libBaseDir):
         status = handle.status()
         print str( float(status.total_upload) / (3 * status.total_download )) + "% seeded     Current Speed: " + str(status.upload_rate/1000)+"kb/s up"
         time.sleep(10)
-        if time.time() - timeStartSeed > 10:  # seed for up to an hour
+        if time.time() - timeStartSeed > 10:  # seed time, make a command line argument in future? 10 seconds for testing
             break
     print "finished uploading"
     # return filepath of new item
