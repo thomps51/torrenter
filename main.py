@@ -3,8 +3,15 @@ import torrenter, rss, filer, emailer
 import shutil, os, time 
 from optparse import OptionParser
 
+# Configuration Options
+cwd		= os.getcwd()
+baseDir 	= cwd + "/"
+tempDir		= "/media/Seagate/temp/"
+libBaseDir	= "/media/Seagate"+"/TVshows"
+rssFeedURL  = "http://showrss.info/rss.php?user_id=248153&hd=1&proper=1"
 
-# TODO : make seed option work, add option for sleep time
+
+# TODO : make seed option work, add option for sleep time, emailer
 parser = OptionParser()
 parser.add_option("-s", "--seed",
                   action="store_true", dest="seed", default=False,
@@ -12,16 +19,10 @@ parser.add_option("-s", "--seed",
 
 (options, args) = parser.parse_args()
 
-cwd		= os.getcwd()
-baseDir 	= cwd + "/"
-#tempDir		= cwd + "/temp/"
-tempDir		= "/media/Seagate/temp/"
-#libBaseDir	= os.path.dirname(cwd)+"/TVshows/"
-libBaseDir	= "/media/Seagate"+"/TVshows"
 
 while(True):
     print "getting rss feed"
-    rssFeed = rss.getRSSfeed()
+    rssFeed = rss.getRSSfeed(rssFeedURL)
     print "getting magnet links"
     updated, magnetLinks, showTitles = rss.update(rssFeed,tempDir,libBaseDir)
     if updated:
@@ -30,8 +31,8 @@ while(True):
         newFiles = []
         for newFilePath in newFilesPath:
             newFiles.append(os.path.basename(newFilePath))
-        emailer.showUpdateEmail(newFiles)
-
+        #emailer.showUpdateEmail(newFiles)  Doesn't work...
+    
 # clean temp folder
 
     #break

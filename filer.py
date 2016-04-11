@@ -1,15 +1,12 @@
 import glob, os
 import re, shutil
 import subprocess
-# needed global variables
-# tv show library base dir
-# baseDir of 
 
 def recursive_glob(rootdir='.', suffix=''):
     return [os.path.join(looproot, filename)
             for looproot, _, filenames in os.walk(rootdir)
             for filename in filenames if filename.endswith(suffix)]
-
+# bad naming... TODO: name the following functions better 
 def checkFolder1(baseDir, folderName):
 	pathExists = os.path.exists(baseDir+folderName+"/")
 	if not pathExists:
@@ -20,6 +17,7 @@ def checkFolder(folderPath):
 	if not pathExists:
 		os.mkdir(folderPath)
 
+# can clean up
 def placeFile(filePath,showTitle,libBaseDir):
     # check if Directory of showTitle exists
     checkFolder1(libBaseDir + "/", showTitle)
@@ -58,6 +56,7 @@ def placeFile(filePath,showTitle,libBaseDir):
     return newFilePath
 
 def updateLibrary(showTitle,libBaseDir):
+    # kind of a hack, media file will have the largest filesize of downloaded files
 	cfiles = recursive_glob('./temp', '')
 	fileSizes = []
 	for cfile in cfiles:

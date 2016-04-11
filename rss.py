@@ -38,11 +38,17 @@ def getDateRSS(rssFeed , index):
         print rssFeed.entries[index].published 
  
     return dateRSS
-# TODO: if no file avaiable, make new one
 def getDateFile():
+    
+    if not os.path.isfile('time.txt'):
+        f = open('time.txt', 'w')
+        date=datetime(2000,1,1,1,1,1)
+        f.write(str(date))
+        f.close()        
+
     with open('time.txt', 'r') as f:
         sDate = f.readline()
-    
+ 
     year  = int(sDate[0:4])
     month = int(sDate[5:7])
     day   = int(sDate[8:10])
@@ -51,10 +57,7 @@ def getDateFile():
     t3    = int(sDate[17:19])
     return datetime(int(year),int(month),int(day),int(t1),int(t2),int(t3))
 
-def getRSSfeed():
-    #url = "http://showrss.info/rss.php?user_id=248153&hd=1&proper=1&raw=true" 
-    #url = "http://kat.cr/usearch/The%20Late%20Show%20Colbert/?rss=1" 
-    url = "http://showrss.info/rss.php?user_id=248153&hd=1&proper=1"
+def getRSSfeed(url):
     d = feedparser.parse( url )
     return d
 
