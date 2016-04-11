@@ -2,11 +2,15 @@ import glob, os
 import re, shutil
 import subprocess
 
+<<<<<<< HEAD
 def recursive_glob(rootdir='.', suffix=''):
     return [os.path.join(looproot, filename)
             for looproot, _, filenames in os.walk(rootdir)
             for filename in filenames if filename.endswith(suffix)]
 # bad naming... TODO: name the following functions better 
+=======
+
+>>>>>>> 67c96a7f91d156a095d29f9aa60fbd3178593b9f
 def checkFolder1(baseDir, folderName):
 	pathExists = os.path.exists(baseDir+folderName+"/")
 	if not pathExists:
@@ -26,8 +30,12 @@ def placeFile(filePath,showTitle,libBaseDir):
     fileName = os.path.basename(filePath)
     #os.rename(filePath,libBaseDir+"/"+showTitle+"/"+fileName)
     #shutil.move(filePath, libBaseDir+"/"+showTitle+"/"+fileName)
+ 
+    #check season number of form S06, s04 ... etc
+    match = re.search(r'''(?ix)(?:s|S|^)\s*(\d{2})''',fileName)
    
-    if "Stephen Colbert" in showTitle:
+    # if no season number, just save in show title folder
+    if match == None:
         newFilePath=libBaseDir+"/"+showTitle+"/"+fileName
         command="cp " + filePath + " " + newFilePath
         #subprocess.call(command,shell=True)
@@ -37,10 +45,8 @@ def placeFile(filePath,showTitle,libBaseDir):
         shutil.rmtree(os.path.dirname(filePath))
         print "copy done!"
         return newFilePath
- 
-    #check season number
-    match = re.search(r'''(?ix)(?:s|S|^)\s*(\d{2})''',fileName)
-    
+
+
     season = int(match.group(0)[1:3])
     checkFolder1(libBaseDir+"/"+showTitle+"/", "Season "+ str(season))
     
@@ -55,6 +61,7 @@ def placeFile(filePath,showTitle,libBaseDir):
     print "copy done!"
     return newFilePath
 
+<<<<<<< HEAD
 def updateLibrary(showTitle,libBaseDir):
     # kind of a hack, media file will have the largest filesize of downloaded files
 	cfiles = recursive_glob('./temp', '')
@@ -67,3 +74,5 @@ def updateLibrary(showTitle,libBaseDir):
 	
 	# move file to correct location
 	placeFile(tvFile,showTitle,libBaseDir)
+=======
+>>>>>>> 67c96a7f91d156a095d29f9aa60fbd3178593b9f
