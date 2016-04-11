@@ -19,17 +19,6 @@ parser.add_option("-s", "--seed",
 
 (options, args) = parser.parse_args()
 
-<<<<<<< HEAD
-=======
-cwd		= os.getcwd()
-baseDir 	= cwd + "/"
-#tempDir		= cwd + "/temp/"
-tempDir		= cwd + "/temp/"
-#tempDir		= "/media/Seagate/temp/"
-libBaseDir	= cwd+"/TVshows/"
-#libBaseDir	= "/media/Seagate"+"/TVshows"
-rssFeedURL = "http://showrss.info/rss.php?user_id=248153&hd=1&proper=1"
->>>>>>> 67c96a7f91d156a095d29f9aa60fbd3178593b9f
 
 while(True):
     print "getting rss feed"
@@ -42,13 +31,6 @@ while(True):
         newFiles = []
         for newFilePath in newFilesPath:
             newFiles.append(os.path.basename(newFilePath))
-<<<<<<< HEAD
-        #emailer.showUpdateEmail(newFiles)  Doesn't work...
-    
-=======
-        #emailer.showUpdateEmail(newFiles)
-
->>>>>>> 67c96a7f91d156a095d29f9aa60fbd3178593b9f
 # clean temp folder
 
     #break
