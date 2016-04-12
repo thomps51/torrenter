@@ -1,6 +1,6 @@
 import feedparser
 from datetime import datetime
-import sys
+import sys,os
 import re
 import filer
 import torrenter
