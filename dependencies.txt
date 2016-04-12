@@ -1,0 +1,6 @@
+libtorrent: sudo apt-get install python-libtorrent
+pip       : sudo apt-get install python-pip
+feedparser: sudo pip install feedparser
+
+for email notifications:
+
