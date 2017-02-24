@@ -13,10 +13,9 @@ def getDateRSS(rssFeed , index):
     if index >= len(rssFeed.entries) or len(rssFeed.entries[0].published) < 26:
         print "Why did this happen? Index too large! Malformed rssFeed? Debug info:"
         print "Index = " + str(index)
-        print "size of entries = " + len(rssFeed.entries)
-        print "size of published = " + len(rssFeed.entries[0].published)
-        print rssFeed.entries[0].published
-        print rssFeed.entries[index].published 
+        print "size of entries = " + str(len(rssFeed.entries))
+        return None
+        
     date  = rssFeed.entries[index].published[5:7]
     month = rssFeed.entries[index].published[8:11]
     year  = rssFeed.entries[index].published[12:16]
@@ -70,8 +69,6 @@ def getShowTitle(rssFeed, index):
         match = re.match(r'.+?(?= \dx\d\d)',title)
     if match == None:
         match = re.match(r'.+?(?= \d\d\d\d-\d\d-\d\d)',title)
-    #print match
-    #print str(match.group(0))
     return str(match.group(0))
 
 def line_prepender(filename, line):
@@ -83,12 +80,16 @@ def line_prepender(filename, line):
 def update(rssFeed, tempDir, libBaseDir):
     #download latest
     updateTime  = getDateRSS(rssFeed,0)
+    if updateTime == None:
+        return None, None, None
     magnetLinks = []
     showTitles  = []
     updated	    = False
     for i in range(len(rssFeed.entries)-1,-1,-1): # start at oldest entry, work forward
 
         feedDate = getDateRSS(rssFeed, i)
+        if feedDate == None:
+            return None, None, None
         #print feedDate
         if getDateFile() < feedDate:
     	    # check from last item in RSS feed, comparing titles

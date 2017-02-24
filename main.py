@@ -5,11 +5,11 @@ from optparse import OptionParser
 
 # Configuration Options
 cwd		= os.getcwd()
-baseDir 	= cwd + "/"
-tempDir		= "/media/Seagate/temp/"
+baseDir 	= cwd 
+tempDir		= "/media/Seagate/TVshows/temp/"
 libBaseDir	= "/media/Seagate"+"/TVshows"
-rssFeedURL  = "http://showrss.info/rss.php?user_id=248153&hd=1&proper=1"
-
+#rssFeedURL  = "http://showrss.info/rss.php?user_id=248153&hd=1&proper=1"
+rssFeedURL  = "http://showrss.info/user/67582.rss?magnets=true&namespaces=true&name=clean&quality=null&re=null"
 
 # TODO : make seed option work, add option for sleep time, emailer
 parser = OptionParser()
@@ -25,6 +25,8 @@ while(True):
     rssFeed = rss.getRSSfeed(rssFeedURL)
     print "getting magnet links"
     updated, magnetLinks, showTitles = rss.update(rssFeed,tempDir,libBaseDir)
+    if updated == None: # fix crashing on empty rss feed
+        updated=False
     if updated:
         print "found update - updating"
         newFilesPath = torrenter.downloadShowsToLibrary(magnetLinks, showTitles, tempDir, libBaseDir)

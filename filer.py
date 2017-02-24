@@ -25,8 +25,6 @@ def placeFile(filePath,showTitle,libBaseDir):
     
     # move the file to that directory
     fileName = os.path.basename(filePath)
-    #os.rename(filePath,libBaseDir+"/"+showTitle+"/"+fileName)
-    #shutil.move(filePath, libBaseDir+"/"+showTitle+"/"+fileName)
  
     #check season number of form S06, s04 ... etc
     match = re.search(r'''(?ix)(?:s|S|^)\s*(\d{2})''',fileName)
@@ -35,10 +33,8 @@ def placeFile(filePath,showTitle,libBaseDir):
     if match == None:
         newFilePath=libBaseDir+"/"+showTitle+"/"+fileName
         command="cp " + filePath + " " + newFilePath
-        #subprocess.call(command,shell=True)
-        #shutil.move(filePath, newFilePath)
+        shutil.move(filePath, newFilePath)
         print "copying file to library..."
-        shutil.copyfile(filePath, newFilePath)
         shutil.rmtree(os.path.dirname(filePath))
         print "copy done!"
         return newFilePath
@@ -48,11 +44,7 @@ def placeFile(filePath,showTitle,libBaseDir):
     checkFolder1(libBaseDir+"/"+showTitle+"/", "Season "+ str(season))
     
     newFilePath = libBaseDir+"/"+showTitle+"/"+"Season "+ str(season)+"/"+fileName
-    #os.rename(filePath, newFilePath)
-    #shutil.move(filePath, newFilePath)
     print "copying file to library..."
-    #command="cp " + filePath + " " + newFilePath
-    #subprocess.call(command,shell=True)
     shutil.copyfile(filePath, newFilePath)
     shutil.rmtree(os.path.dirname(filePath))
     print "copy done!"
@@ -66,7 +58,6 @@ def updateLibrary(showTitle,libBaseDir):
 		fileSizes.append(os.path.getsize(cfile))
 	maxIndex = fileSizes.index(max(fileSizes))
 	tvFile = cfiles[maxIndex]
-	
 	
 	# move file to correct location
 	placeFile(tvFile,showTitle,libBaseDir)

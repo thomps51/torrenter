@@ -15,8 +15,9 @@ def updateLibrary(info, showTitle, tempDir, libBaseDir):
     Sizes = []
     fileSizes = []
     for i in range(0,Nfiles):
-            filePaths.append(tempDir + info.file_at(i).path)
+        filePaths.append(tempDir + info.file_at(i).path)
     for cfile in filePaths:
+        if "txt" not in cfile:
             fileSizes.append(os.path.getsize(cfile))
     maxIndex = fileSizes.index(max(fileSizes))
     tvFile = filePaths[maxIndex]
